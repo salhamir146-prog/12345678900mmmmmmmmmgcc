@@ -5,3 +5,7 @@ compatibility_date = "2025-01-01"
 [assets]
 directory = "./public"
 binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "OY_KV"
+id = "62a50a239c7f437ebea7f116635fb1de"
