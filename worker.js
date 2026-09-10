@@ -2,7 +2,7 @@
 // 🕌 اوای یقین — Backend Worker (Token-based Auth)
 // ═══════════════════════════════════════════════════════════
 
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-3.6-flash";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent`;
 
 const DEFAULT_SYSTEM_PROMPT = `شما «اوای یقین» هستی، یک دستیار هوشمند متخصص در پاسخگویی به پرسش‌های دینی، احکام، تفسیر قرآن و معارف اسلامی.
