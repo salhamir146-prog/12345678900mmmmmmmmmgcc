@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════
-// 🕌 اوای یقین — Backend Worker
+// 🕌 اوای یقین — Backend Worker (with Cloudflare Assets)
 // ═══════════════════════════════════════════════════════════
 
 const GEMINI_MODEL = "gemini-2.5-flash";
@@ -71,7 +71,7 @@ export default {
         return await handleAdminSaveSettings(request, env);
       }
 
-      // ═══ Static Files ═══
+      // ═══ Static Files (from Cloudflare Assets) ═══
       return await serveStatic(request, env);
     } catch (err) {
       return json({ error: err.message }, 500);
@@ -337,21 +337,10 @@ async function handleAdminSaveSettings(request, env) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// 📄 Static Files (index.html)
+// 📄 Static Files (from Cloudflare Assets)
 // ═══════════════════════════════════════════════════════════
 async function serveStatic(request, env) {
-  const url = new URL(request.url);
-
-  // صفحه اصلی
-  if (url.pathname === "/" || url.pathname === "/index.html") {
-    const html = await env.OY_KV.get("static:index.html");
-    if (!html) return new Response("index.html یافت نشد", { status: 404 });
-    return new Response(html, {
-      headers: { "Content-Type": "text/html; charset=utf-8" }
-    });
-  }
-
-  return new Response("Not Found", { status: 404 });
+  return env.ASSETS.fetch(request);
 }
 
 // ═══════════════════════════════════════════════════════════
