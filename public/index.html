@@ -39,53 +39,47 @@ button{cursor:pointer;border:0;background:none}
 .sidebar.collapsed{width:0;border:0;overflow:hidden}
 .sidebar-inner{width:272px;height:100%;display:flex;flex-direction:column;padding:10px}
 .sidebar-header{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 10px}
-.brand{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:10px;transition:background .15s}
-.brand:hover{background:var(--sidebar-hover)}
+.brand{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:10px}
 .brand-logo{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7dd3fc,#0369a1);display:grid;place-items:center;box-shadow:0 4px 12px rgba(14,165,233,.35);flex-shrink:0;overflow:hidden}
 .brand-logo svg{width:22px;height:22px}
 .brand-name{font-size:13px;font-weight:600;color:var(--sky-800)}
 [data-theme="dark"] .brand-name{color:#7dd3fc}
 .new{height:44px;border:1px solid var(--border);border-radius:11px;display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--input-bg);font-size:13.5px;font-weight:500;color:var(--text);transition:.15s;margin-bottom:8px;box-shadow:var(--shadow-sm)}
-.new:active{transform:scale(.98)}
 .new .plus{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#0369a1);color:#fff;display:grid;place-items:center;font-size:14px;flex-shrink:0}
-.search{height:40px;margin:0 2px 12px;border-radius:10px;background:var(--sidebar-hover);display:flex;align-items:center;padding:0 12px;gap:8px;color:var(--text-secondary);transition:.15s;border:1px solid transparent}
-.search:focus-within{background:var(--input-bg);border-color:var(--sky-300)}
+.search{height:40px;margin:0 2px 12px;border-radius:10px;background:var(--sidebar-hover);display:flex;align-items:center;padding:0 12px;gap:8px;color:var(--text-secondary);border:1px solid transparent}
 .search input{width:100%;border:0;outline:0;background:transparent;font-size:13px;color:var(--text)}
-.search input::placeholder{color:var(--text-secondary)}
 .label{font-size:10.5px;color:var(--text-secondary);padding:12px 12px 6px;font-weight:600;letter-spacing:.3px}
 .history{flex:1;overflow-y:auto;padding:0 2px;margin:0 -2px}
 .history::-webkit-scrollbar{width:5px}
 .history::-webkit-scrollbar-thumb{background:var(--sky-200);border-radius:3px}
-.chat{padding:10px 11px;border-radius:9px;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:2px 0;color:var(--text);transition:.15s;display:flex;align-items:center;gap:8px;cursor:pointer;position:relative;min-height:44px}
-.chat:hover,.chat:active{background:var(--sidebar-hover)}
+.chat{padding:10px 11px;border-radius:9px;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:2px 0;color:var(--text);display:flex;align-items:center;gap:8px;cursor:pointer;position:relative;min-height:44px}
+.chat:hover{background:var(--sidebar-hover)}
 .chat.active{background:var(--sky-100);color:var(--sky-800);font-weight:600}
 [data-theme="dark"] .chat.active{background:#132a45;color:#7dd3fc}
-.chat .del{position:absolute;left:6px;top:50%;transform:translateY(-50%);opacity:0;font-size:14px;color:var(--text-secondary);transition:opacity .15s;padding:6px 8px;border-radius:6px;min-width:32px;min-height:32px;display:grid;place-items:center}
+.chat .del{position:absolute;left:6px;top:50%;transform:translateY(-50%);opacity:0;font-size:14px;color:var(--text-secondary);padding:6px 8px;border-radius:6px;min-width:32px;min-height:32px;display:grid;place-items:center}
 .chat:hover .del{opacity:1}
-.chat .del:hover{background:rgba(239,68,68,.15);color:#ef4444}
 .sidebottom{border-top:1px solid var(--border);padding-top:8px;margin-top:8px;display:flex;flex-direction:column;gap:2px}
-.sidebtn{width:100%;height:44px;border-radius:9px;text-align:right;padding:0 12px;font-size:13.5px;color:var(--text);transition:.15s;display:flex;align-items:center;gap:11px}
-.sidebtn:hover,.sidebtn:active{background:var(--sidebar-hover)}
+.sidebtn{width:100%;height:44px;border-radius:9px;text-align:right;padding:0 12px;font-size:13.5px;color:var(--text);display:flex;align-items:center;gap:11px}
+.sidebtn:hover{background:var(--sidebar-hover)}
 .sidebtn .ic{width:20px;height:20px;display:grid;place-items:center;color:var(--sky-500);font-size:15px;flex-shrink:0}
-.user-card{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:.15s;margin-top:4px;border:1px solid transparent;min-height:48px}
-.user-card:hover{background:var(--sidebar-hover);border-color:var(--border)}
+.user-card{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;margin-top:4px;border:1px solid transparent;min-height:48px}
 .user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#0369a1);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0}
 .user-info{flex:1;min-width:0}
 .user-info .name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-info .plan{font-size:10.5px;color:var(--text-secondary)}
 .admin-badge{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;font-size:9px;padding:2px 6px;border-radius:20px;font-weight:700;margin-right:auto}
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:15;opacity:0;pointer-events:none;transition:opacity .3s}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);z-index:15;opacity:0;pointer-events:none;transition:opacity .3s}
 .backdrop.show{opacity:1;pointer-events:auto}
 .main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;overflow:hidden}
-.header{display:flex;align-items:center;justify-content:space-between;padding:0 12px;padding-top:var(--safe-top);height:calc(58px + var(--safe-top));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:4;border-bottom:1px solid transparent;flex-shrink:0}
+.header{display:flex;align-items:center;justify-content:space-between;padding:0 12px;padding-top:var(--safe-top);height:calc(58px + var(--safe-top));background:var(--bg);z-index:4;border-bottom:1px solid transparent;flex-shrink:0}
 .header.scrolled{border-color:var(--border)}
 .model{font-size:15px;font-weight:600;display:flex;gap:6px;align-items:center;color:var(--text);padding:6px 10px;border-radius:9px}
 .model .badge{font-size:10px;font-weight:500;background:var(--sky-100);color:var(--sky-700);padding:2px 8px;border-radius:20px;border:1px solid var(--sky-200);white-space:nowrap}
 [data-theme="dark"] .model .badge{background:#132a45;color:#7dd3fc;border-color:#1e3a5f}
 .header-left{display:flex;align-items:center;gap:2px;min-width:0}
 .header-actions{display:flex;gap:2px}
-.icon{width:40px;height:40px;border-radius:10px;font-size:18px;color:var(--text-secondary);display:grid;place-items:center;transition:.15s;flex-shrink:0}
-.icon:hover,.icon:active{background:var(--sidebar-hover);color:var(--sky-600)}
+.icon{width:40px;height:40px;border-radius:10px;font-size:18px;color:var(--text-secondary);display:grid;place-items:center;flex-shrink:0}
+.icon:hover{background:var(--sidebar-hover);color:var(--sky-600)}
 .mobile-only{display:none}
 .content{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;position:relative}
 .content::-webkit-scrollbar{width:10px}
@@ -100,7 +94,7 @@ button{cursor:pointer;border:0;background:none}
 .welcome .ayah{display:inline-block;background:var(--sky-50);border:1px solid var(--sky-100);color:var(--sky-700);padding:9px 20px;border-radius:24px;font-size:12.5px;margin-bottom:32px;box-shadow:var(--shadow-sm)}
 [data-theme="dark"] .welcome .ayah{background:#0d1424;border-color:#1e3a5f;color:#7dd3fc}
 .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;max-width:640px;margin:0 auto}
-.card{text-align:right;border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--input-bg);transition:.2s;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);min-height:80px}
+.card{text-align:right;border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--input-bg);transition:.2s;box-shadow:var(--shadow-sm);min-height:80px}
 .card:hover{background:var(--sky-50);border-color:var(--sky-200);transform:translateY(-2px);box-shadow:var(--shadow-md)}
 .card strong{font-size:13.5px;display:block;margin-bottom:6px;color:var(--sky-800);font-weight:600}
 [data-theme="dark"] .card strong{color:#7dd3fc}
@@ -129,9 +123,8 @@ button{cursor:pointer;border:0;background:none}
 .ai .bubble .text blockquote{border-right:3px solid var(--sky-400);padding:8px 14px;background:var(--sky-50);margin:10px 0;border-radius:0 10px 10px 0;color:var(--sky-800);font-style:italic}
 .actions{display:flex;gap:2px;margin-top:10px;opacity:0;transition:opacity .2s;flex-wrap:wrap}
 .message:hover .actions{opacity:1}
-.actions button{font-size:14px;color:var(--text-secondary);padding:6px 9px;border-radius:8px;transition:.15s;display:grid;place-items:center;min-width:34px;min-height:34px}
+.actions button{font-size:14px;color:var(--text-secondary);padding:6px 9px;border-radius:8px;display:grid;place-items:center;min-width:34px;min-height:34px}
 .actions button:hover{background:var(--sidebar-hover);color:var(--sky-600)}
-.actions button.active{color:var(--sky-600);background:var(--sky-100)}
 .typing{display:inline-flex;gap:4px;align-items:center;padding:6px 0}
 .typing span{width:7px;height:7px;border-radius:50%;background:var(--sky-400);animation:bounce 1.3s infinite}
 .typing span:nth-child(2){animation-delay:.18s}
@@ -144,15 +137,14 @@ button{cursor:pointer;border:0;background:none}
 .composer:focus-within{border-color:var(--sky-300)}
 textarea{flex:1;min-height:28px;max-height:180px;resize:none;border:0;outline:0;padding:8px 2px;background:transparent;line-height:1.7;font-size:16px;color:var(--text);font-family:inherit}
 textarea::placeholder{color:var(--text-secondary);opacity:.75}
-.tool{width:40px;height:40px;border-radius:50%;color:var(--text-secondary);font-size:20px;display:grid;place-items:center;transition:.15s;flex-shrink:0}
+.tool{width:40px;height:40px;border-radius:50%;color:var(--text-secondary);font-size:20px;display:grid;place-items:center;flex-shrink:0}
 .tool:hover{background:var(--sidebar-hover);color:var(--sky-600)}
 .tool.recording{background:#fef2f2;color:#ef4444;animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}50%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
 .tool.has-image{background:var(--sky-100);color:var(--sky-600)}
-.send{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#0369a1);color:#fff;font-size:17px;display:grid;place-items:center;transition:.2s;flex-shrink:0;box-shadow:0 4px 14px rgba(14,165,233,.4)}
-.send:hover:not(:disabled){background:linear-gradient(135deg,#0ea5e9,#075985)}
-.send:disabled{background:var(--border);color:var(--text-secondary);cursor:not-allowed;box-shadow:none}
-.send.stop{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.send-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#0369a1);color:#fff;font-size:17px;display:grid;place-items:center;flex-shrink:0;box-shadow:0 4px 14px rgba(14,165,233,.4)}
+.send-btn:disabled{background:var(--border);color:var(--text-secondary);cursor:not-allowed;box-shadow:none}
+.send-btn.stop{background:linear-gradient(135deg,#ef4444,#b91c1c)}
 .image-preview{position:absolute;bottom:100%;margin-bottom:8px;left:14px;background:var(--input-bg);border:1px solid var(--border);border-radius:12px;padding:6px;display:none;box-shadow:var(--shadow-md)}
 .image-preview.show{display:block}
 .image-preview img{max-width:100px;max-height:100px;border-radius:8px;display:block}
@@ -238,17 +230,7 @@ textarea::placeholder{color:var(--text-secondary);opacity:.75}
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 82 L20 70 L80 70 L92 82 Z" fill="#0369a1"/>
-        <path d="M14 32 Q20 24 32 24 L50 30 L50 70 Q32 64 14 70 Z" fill="#0ea5e9"/>
-        <path d="M86 32 Q80 24 68 24 L50 30 L50 70 Q68 64 86 70 Z" fill="#0ea5e9"/>
-        <path d="M22 40 Q30 36 46 38" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        <path d="M22 48 Q30 44 46 46" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        <path d="M22 56 Q30 52 46 54" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        <path d="M78 40 Q70 36 54 38" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        <path d="M78 48 Q70 44 54 46" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        <path d="M78 56 Q70 52 54 54" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <svg viewBox="0 0 100 100" fill="none"><path d="M8 82 L20 70 L80 70 L92 82 Z" fill="#0369a1"/><path d="M14 32 Q20 24 32 24 L50 30 L50 70 Q32 64 14 70 Z" fill="#0ea5e9"/><path d="M86 32 Q80 24 68 24 L50 30 L50 70 Q68 64 86 70 Z" fill="#0ea5e9"/><path d="M22 40 Q30 36 46 38" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M22 48 Q30 44 46 46" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M22 56 Q30 52 46 54" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M78 40 Q70 36 54 38" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M78 48 Q70 44 54 46" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M78 56 Q70 52 54 54" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
     <h1>اوای یقین</h1>
     <p class="sub">دستیار هوشمند پاسخ‌گویی به پرسش‌های دینی<br>برای ورود، نام و شماره تلفن خود را وارد کنید</p>
@@ -271,9 +253,7 @@ textarea::placeholder{color:var(--text-secondary);opacity:.75}
   <div class="sidebar-inner">
     <div class="sidebar-header">
       <div class="brand">
-        <div class="brand-logo">
-          <svg viewBox="0 0 100 100" fill="none"><path d="M8 82 L20 70 L80 70 L92 82 Z" fill="#fff"/><path d="M14 32 Q20 24 32 24 L50 30 L50 70 Q32 64 14 70 Z" fill="#fff"/><path d="M86 32 Q80 24 68 24 L50 30 L50 70 Q68 64 86 70 Z" fill="#fff"/></svg>
-        </div>
+        <div class="brand-logo"><svg viewBox="0 0 100 100" fill="none"><path d="M8 82 L20 70 L80 70 L92 82 Z" fill="#fff"/><path d="M14 32 Q20 24 32 24 L50 30 L50 70 Q32 64 14 70 Z" fill="#fff"/><path d="M86 32 Q80 24 68 24 L50 30 L50 70 Q68 64 86 70 Z" fill="#fff"/></svg></div>
         <span class="brand-name">اوای یقین</span>
       </div>
       <button class="icon" onclick="toggleCollapse()" style="width:36px;height:36px;font-size:16px">✕</button>
@@ -302,16 +282,12 @@ textarea::placeholder{color:var(--text-secondary);opacity:.75}
 <main class="main">
   <header class="header" id="header">
     <div class="header-left">
-      <button class="icon mobile-only" onclick="toggleSidebar()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
+      <button class="icon mobile-only" onclick="toggleSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       <button class="icon" id="collapseBtn" onclick="toggleCollapse()">⟨</button>
       <div class="model">اوای یقین<span class="badge">پاسخگوی دینی</span></div>
     </div>
     <div class="header-actions">
-      <button class="icon" onclick="openModal('options')">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
-      </button>
+      <button class="icon" onclick="openModal('options')"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
     </div>
   </header>
   <section class="content" id="content">
@@ -354,12 +330,12 @@ textarea::placeholder{color:var(--text-secondary);opacity:.75}
   </section>
   <button class="scroll-btn" id="scrollBtn" onclick="scrollBottom()">↓</button>
   <div class="composer-area">
-    <form class="composer" onsubmit="send(event)">
+    <form class="composer" onsubmit="sendMessage(event)">
       <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImage(this)">
       <button type="button" class="tool" id="imageBtn" title="تصویر" onclick="document.getElementById('imageInput').click()">＋</button>
       <textarea id="input" rows="1" placeholder="پرسش دینی خود را بنویسید..." oninput="grow(this)"></textarea>
       <button type="button" class="tool" id="micBtn" title="میکروفون" onclick="toggleMic()">🎤</button>
-      <button id="send" class="send" disabled title="ارسال">↑</button>
+      <button id="sendBtn" type="submit" class="send-btn" disabled title="ارسال">↑</button>
       <div class="image-preview" id="imagePreview">
         <img id="imagePreviewImg">
         <button type="button" onclick="clearImage()">✕</button>
@@ -425,8 +401,13 @@ const state = {
   streamingText: ''
 };
 
-const input = $('input'), sendBtn = $('send'), wrap = $('wrap'), content = $('content');
-const sidebar = $('sidebar'), backdrop = $('backdrop'), scrollBtn = $('scrollBtn');
+const input = $('input');
+const sendBtn = $('sendBtn');   // ⬅️ ID دکمه عوض شد
+const wrap = $('wrap');
+const content = $('content');
+const sidebar = $('sidebar');
+const backdrop = $('backdrop');
+const scrollBtn = $('scrollBtn');
 
 document.documentElement.setAttribute('data-theme', state.theme);
 updateThemeBtn();
@@ -449,7 +430,7 @@ async function checkAuth() {
   try {
     const data = await api('/api/me');
     if (data && data.user) {
-      await onLoginSuccess(data.user, false, false);
+      await onLoginSuccess(data.user, false);
       return true;
     }
   } catch (e) {}
@@ -486,7 +467,7 @@ async function doLogin() {
     });
     state.token = data.token;
     localStorage.setItem('oy_token', data.token);
-    await onLoginSuccess(data.user, true, true);
+    await onLoginSuccess(data.user, true);
   } catch (e) {
     errEl.textContent = e.message;
     errEl.classList.add('show');
@@ -495,7 +476,7 @@ async function doLogin() {
   }
 }
 
-async function onLoginSuccess(user, save, animate) {
+async function onLoginSuccess(user, animate) {
   state.user = user;
   $('loginScreen').classList.add('hide');
   setTimeout(() => {
@@ -710,8 +691,8 @@ function toggleMic() {
   recognition.start();
 }
 
-/* ═══════════ Send ═══════════ */
-async function send(e) {
+/* ═══════════ Send Message ═══════════ */
+async function sendMessage(e) {
   e.preventDefault();
   if (state.generating && state.abortController) {
     state.abortController.abort();
@@ -844,7 +825,7 @@ async function streamResponse(conv, image) {
   renderHistory();
 }
 
-function add(text, type, save = true) {
+function add(text, type) {
   const el = document.createElement('div');
   el.className = 'message ' + type;
   const avatar = type === 'ai' ? AI_SVG : (state.user?.name?.charAt(0) || 'شما');
