@@ -19,59 +19,29 @@ const DEFAULT_SYSTEM_PROMPT = `شما «اوای یقین» هستی، یک دس
 ۹. از پاسخ‌های تند، تکفیری یا تفرقه‌انگیز پرهیز کن.
 ۱۰. اگر سؤالی را نمی‌دانی، صادقانه بگو و پیشنهاد منابع بده.`;
 
-const SESSION_TTL = 30 * 24 * 60 * 60; // ۳۰ روز
-const MAX_LOGIN_ATTEMPTS = 5;
-const LOCK_DURATION = 15 * 60; // ۱۵ دقیقه
+const SESSION_TTL = 30 * 24 * 60 * 60;
 
-// ═══════════════════════════════════════════════════════════
-// Main Handler
-// ═══════════════════════════════════════════════════════════
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // CORS
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders() });
     }
 
     try {
-      // ═══ API Routes ═══
-      if (path === "/api/login" && request.method === "POST") {
-        return await handleLogin(request, env);
-      }
-      if (path === "/api/logout" && request.method === "POST") {
-        return await handleLogout(request, env);
-      }
-      if (path === "/api/me" && request.method === "GET") {
-        return await handleMe(request, env);
-      }
-      if (path === "/api/chats" && request.method === "GET") {
-        return await handleGetChats(request, env);
-      }
-      if (path === "/api/chats" && request.method === "POST") {
-        return await handleSaveChats(request, env);
-      }
-      if (path === "/api/chat" && request.method === "POST") {
-        return await handleChat(request, env);
-      }
+      if (path === "/api/login" && request.method === "POST") return await handleLogin(request, env);
+      if (path === "/api/logout" && request.method === "POST") return await handleLogout(request, env);
+      if (path === "/api/me" && request.method === "GET") return await handleMe(request, env);
+      if (path === "/api/chats" && request.method === "GET") return await handleGetChats(request, env);
+      if (path === "/api/chats" && request.method === "POST") return await handleSaveChats(request, env);
+      if (path === "/api/chat" && request.method === "POST") return await handleChat(request, env);
+      if (path === "/api/admin/users" && request.method === "GET") return await handleAdminUsers(request, env);
+      if (path === "/api/admin/user" && request.method === "GET") return await handleAdminUserDetail(request, env);
+      if (path === "/api/admin/settings" && request.method === "GET") return await handleAdminGetSettings(request, env);
+      if (path === "/api/admin/settings" && request.method === "POST") return await handleAdminSaveSettings(request, env);
 
-      // ═══ Admin Routes ═══
-      if (path === "/api/admin/users" && request.method === "GET") {
-        return await handleAdminUsers(request, env);
-      }
-      if (path === "/api/admin/user" && request.method === "GET") {
-        return await handleAdminUserDetail(request, env);
-      }
-      if (path === "/api/admin/settings" && request.method === "GET") {
-        return await handleAdminGetSettings(request, env);
-      }
-      if (path === "/api/admin/settings" && request.method === "POST") {
-        return await handleAdminSaveSettings(request, env);
-      }
-
-      // ═══ Static Files (from Cloudflare Assets) ═══
       return await serveStatic(request, env);
     } catch (err) {
       return json({ error: err.message }, 500);
@@ -85,44 +55,25 @@ export default {
 async function handleLogin(request, env) {
   const { name, phone } = await request.json();
 
-  if (!name || !phone) {
-    return json({ error: "نام و شماره تلفن الزامی است" }, 400);
-  }
+  if (!name || !phone) return json({ error: "نام و شماره تلفن الزامی است" }, 400);
 
-  // اعتبارسنجی شماره
   const cleanPhone = String(phone).replace(/\D/g, "");
   if (cleanPhone.length < 10 || cleanPhone.length > 13) {
     return json({ error: "شماره تلفن معتبر نیست" }, 400);
   }
 
-  // Rate limiting
-  const attemptKey = `attempt:${cleanPhone}`;
-  const attempts = parseInt(await env.OY_KV.get(attemptKey) || "0");
-  if (attempts >= MAX_LOGIN_ATTEMPTS) {
-    return json({ error: "تعداد تلاش‌ها بیش از حد مجاز. ۱۵ دقیقه دیگر تلاش کنید." }, 429);
-  }
-
-  // چک ادمین
   const isAdmin = cleanPhone === env.ADMIN_PHONE && name === env.ADMIN_NAME;
 
-  // ذخیره/به‌روزرسانی کاربر
   const userKey = `user:${cleanPhone}`;
   let user = await env.OY_KV.get(userKey, "json");
   if (!user) {
-    user = {
-      phone: cleanPhone,
-      name: name,
-      createdAt: Date.now(),
-      lastLogin: Date.now(),
-      chats: []
-    };
+    user = { phone: cleanPhone, name: name, createdAt: Date.now(), lastLogin: Date.now(), chats: [] };
   } else {
     user.name = name;
     user.lastLogin = Date.now();
   }
   await env.OY_KV.put(userKey, JSON.stringify(user));
 
-  // ساخت Session
   const sessionToken = await generateToken();
   const session = {
     phone: cleanPhone,
@@ -134,11 +85,9 @@ async function handleLogin(request, env) {
     expirationTtl: SESSION_TTL
   });
 
-  // پاک کردن attempts
-  await env.OY_KV.delete(attemptKey);
-
   const headers = corsHeaders();
-  headers["Set-Cookie"] = `oy_session=${sessionToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_TTL}; Path=/`;
+  // ⬇️ تغییر مهم: SameSite=None برای اینکه کوکی توی درخواست‌های CORS بفرسته
+  headers["Set-Cookie"] = `oy_session=${sessionToken}; HttpOnly; Secure; SameSite=None; Max-Age=${SESSION_TTL}; Path=/`;
   headers["Content-Type"] = "application/json; charset=utf-8";
 
   return new Response(JSON.stringify({
@@ -152,7 +101,7 @@ async function handleLogout(request, env) {
   if (token) await env.OY_KV.delete(`session:${token}`);
 
   const headers = corsHeaders();
-  headers["Set-Cookie"] = "oy_session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/";
+  headers["Set-Cookie"] = "oy_session=; HttpOnly; Secure; SameSite=None; Max-Age=0; Path=/";
   headers["Content-Type"] = "application/json; charset=utf-8";
   return new Response(JSON.stringify({ ok: true }), { headers });
 }
@@ -189,33 +138,23 @@ async function handleSaveChats(request, env) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// 🤖 Chat with Gemini (Streaming)
+// 🤖 Chat with Gemini
 // ═══════════════════════════════════════════════════════════
 async function handleChat(request, env) {
   const session = await getSession(request, env);
   if (!session) return json({ error: "Unauthorized" }, 401);
 
   const { messages, image } = await request.json();
-  if (!messages || !messages.length) {
-    return json({ error: "Messages required" }, 400);
-  }
+  if (!messages || !messages.length) return json({ error: "Messages required" }, 400);
 
-  // دریافت تنظیمات AI از KV
   const config = await env.OY_KV.get("config:ai", "json") || {};
   const systemPrompt = config.systemPrompt || DEFAULT_SYSTEM_PROMPT;
   const temperature = config.temperature ?? 0.7;
 
-  // ساخت بدنه درخواست Gemini
   const contents = messages.map((m, i) => {
     const parts = [{ text: m.content }];
-    // اگه آخرین پیام کاربر و تصویر داشت
     if (image && i === messages.length - 1 && m.role === "user") {
-      parts.push({
-        inlineData: {
-          mimeType: image.mimeType,
-          data: image.data
-        }
-      });
+      parts.push({ inlineData: { mimeType: image.mimeType, data: image.data } });
     }
     return {
       role: m.role === "assistant" ? "model" : "user",
@@ -225,9 +164,7 @@ async function handleChat(request, env) {
 
   const body = {
     contents,
-    systemInstruction: {
-      parts: [{ text: systemPrompt }]
-    },
+    systemInstruction: { parts: [{ text: systemPrompt }] },
     generationConfig: {
       temperature: temperature,
       maxOutputTokens: 8192,
@@ -246,7 +183,6 @@ async function handleChat(request, env) {
     return json({ error: "Gemini error: " + errText }, 500);
   }
 
-  // استریم مستقیم به کلاینت
   return new Response(geminiRes.body, {
     headers: {
       ...corsHeaders(),
@@ -262,9 +198,7 @@ async function handleChat(request, env) {
 // ═══════════════════════════════════════════════════════════
 async function handleAdminUsers(request, env) {
   const session = await getSession(request, env);
-  if (!session || session.role !== "admin") {
-    return json({ error: "Unauthorized" }, 401);
-  }
+  if (!session || session.role !== "admin") return json({ error: "Unauthorized" }, 401);
 
   const users = [];
   let cursor;
@@ -291,9 +225,7 @@ async function handleAdminUsers(request, env) {
 
 async function handleAdminUserDetail(request, env) {
   const session = await getSession(request, env);
-  if (!session || session.role !== "admin") {
-    return json({ error: "Unauthorized" }, 401);
-  }
+  if (!session || session.role !== "admin") return json({ error: "Unauthorized" }, 401);
 
   const url = new URL(request.url);
   const phone = url.searchParams.get("phone");
@@ -306,9 +238,7 @@ async function handleAdminUserDetail(request, env) {
 
 async function handleAdminGetSettings(request, env) {
   const session = await getSession(request, env);
-  if (!session || session.role !== "admin") {
-    return json({ error: "Unauthorized" }, 401);
-  }
+  if (!session || session.role !== "admin") return json({ error: "Unauthorized" }, 401);
 
   const config = await env.OY_KV.get("config:ai", "json") || {};
   return json({
@@ -322,9 +252,7 @@ async function handleAdminGetSettings(request, env) {
 
 async function handleAdminSaveSettings(request, env) {
   const session = await getSession(request, env);
-  if (!session || session.role !== "admin") {
-    return json({ error: "Unauthorized" }, 401);
-  }
+  if (!session || session.role !== "admin") return json({ error: "Unauthorized" }, 401);
 
   const { systemPrompt, temperature } = await request.json();
   const config = {
@@ -337,7 +265,7 @@ async function handleAdminSaveSettings(request, env) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// 📄 Static Files (from Cloudflare Assets)
+// 📄 Static Files
 // ═══════════════════════════════════════════════════════════
 async function serveStatic(request, env) {
   return env.ASSETS.fetch(request);
