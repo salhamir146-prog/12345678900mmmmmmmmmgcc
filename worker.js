@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════
-// 🕌 اوای یقین — Backend Worker (with Cloudflare Assets)
+// 🕌 اوای یقین — Backend Worker (Token-based Auth)
 // ═══════════════════════════════════════════════════════════
 
 const GEMINI_MODEL = "gemini-2.5-flash";
@@ -19,7 +19,7 @@ const DEFAULT_SYSTEM_PROMPT = `شما «اوای یقین» هستی، یک دس
 ۹. از پاسخ‌های تند، تکفیری یا تفرقه‌انگیز پرهیز کن.
 ۱۰. اگر سؤالی را نمی‌دانی، صادقانه بگو و پیشنهاد منابع بده.`;
 
-const SESSION_TTL = 30 * 24 * 60 * 60;
+const SESSION_TTL = 30 * 24 * 60 * 60; // ۳۰ روز
 
 export default {
   async fetch(request, env, ctx) {
@@ -50,7 +50,7 @@ export default {
 };
 
 // ═══════════════════════════════════════════════════════════
-// 🔐 Login
+// 🔐 Login (Token-based)
 // ═══════════════════════════════════════════════════════════
 async function handleLogin(request, env) {
   const { name, phone } = await request.json();
@@ -74,36 +74,29 @@ async function handleLogin(request, env) {
   }
   await env.OY_KV.put(userKey, JSON.stringify(user));
 
-  const sessionToken = await generateToken();
+  const token = await generateToken();
   const session = {
     phone: cleanPhone,
     name: name,
     role: isAdmin ? "admin" : "user",
     createdAt: Date.now()
   };
-  await env.OY_KV.put(`session:${sessionToken}`, JSON.stringify(session), {
+  await env.OY_KV.put(`session:${token}`, JSON.stringify(session), {
     expirationTtl: SESSION_TTL
   });
 
-  const headers = corsHeaders();
-  // ⬇️ تغییر مهم: SameSite=None برای اینکه کوکی توی درخواست‌های CORS بفرسته
-  headers["Set-Cookie"] = `oy_session=${sessionToken}; HttpOnly; Secure; SameSite=None; Max-Age=${SESSION_TTL}; Path=/`;
-  headers["Content-Type"] = "application/json; charset=utf-8";
-
-  return new Response(JSON.stringify({
+  // توکن رو توی پاسخ برمی‌گردونیم (نه کوکی)
+  return json({
     ok: true,
+    token: token,
     user: { name, phone: cleanPhone, role: session.role }
-  }), { headers });
+  });
 }
 
 async function handleLogout(request, env) {
-  const token = getSessionToken(request);
+  const token = getToken(request);
   if (token) await env.OY_KV.delete(`session:${token}`);
-
-  const headers = corsHeaders();
-  headers["Set-Cookie"] = "oy_session=; HttpOnly; Secure; SameSite=None; Max-Age=0; Path=/";
-  headers["Content-Type"] = "application/json; charset=utf-8";
-  return new Response(JSON.stringify({ ok: true }), { headers });
+  return json({ ok: true });
 }
 
 async function handleMe(request, env) {
@@ -278,7 +271,7 @@ function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Credentials": "true"
   };
 }
@@ -290,14 +283,15 @@ function json(obj, status = 200) {
   });
 }
 
-function getSessionToken(request) {
-  const cookie = request.headers.get("Cookie") || "";
-  const match = cookie.match(/oy_session=([^;]+)/);
-  return match ? match[1] : null;
+function getToken(request) {
+  // توکن رو از Authorization header می‌خونیم
+  const auth = request.headers.get("Authorization") || "";
+  if (auth.startsWith("Bearer ")) return auth.slice(7);
+  return null;
 }
 
 async function getSession(request, env) {
-  const token = getSessionToken(request);
+  const token = getToken(request);
   if (!token) return null;
   return await env.OY_KV.get(`session:${token}`, "json");
 }
