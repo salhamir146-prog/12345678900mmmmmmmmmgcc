@@ -1,11 +1,7 @@
-name = "oy-ai"
+name = "12345678900mmmmmmmmmgcc"
 main = "worker.js"
 compatibility_date = "2025-01-01"
 
-# GEMINI_API_KEY
-# ADMIN_PHONE  
-# ADMIN_NAME
-# SESSION_SECRET
-
-[vars]
-APP_NAME = "اوای یقین"
+[assets]
+directory = "./public"
+binding = "ASSETS"
