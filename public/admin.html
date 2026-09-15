@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0369a1">
+<title>پنل مدیریت | اوای یقین</title>
+<link rel="stylesheet" href="/style.css">
+<style>
+/* استایل مخصوص پنل ادمین */
+.admin-app {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-alt);
+  overflow: hidden;
+}
+
+.admin-topbar {
+  background: linear-gradient(135deg, #0c4a6e, #0369a1);
+  color: #fff;
+  padding: 14px 20px;
+  padding-top: calc(14px + var(--safe-top));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  flex-shrink: 0;
+}
+.admin-topbar h1 {
+  font-size: 17px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.admin-topbar h1 svg { width: 22px; height: 22px; }
+.admin-topbar .actions { display: flex; gap: 6px; }
+.admin-topbar .top-btn {
+  width: 38px; height: 38px;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  transition: .15s;
+  backdrop-filter: blur(10px);
+}
+.admin-topbar .top-btn:hover { background: rgba(255,255,255,.28); }
+.admin-topbar .top-btn svg { width: 18px; height: 18px; }
+
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 10px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.admin-tab {
+  padding: 9px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: .15s;
+}
+.admin-tab:hover { background: var(--sidebar-hover); color: var(--text); }
+.admin-tab.active {
+  background: linear-gradient(135deg, var(--sky-400), var(--sky-700));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(14,165,233,.3);
+}
+.admin-tab svg { width: 15px; height: 15px; }
+
+.admin-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px calc(20px + var(--safe-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+.admin-body::-webkit-scrollbar { width: 8px; }
+.admin-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+.admin-section { display: none; }
+.admin-section.active { display: block; animation: fadeIn .25s ease; }
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: .2s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.stat-card .stat-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--sky-50);
+  color: var(--sky-600);
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+}
+.stat-card .stat-icon svg { width: 20px; height: 20px; }
+.stat-card .num {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--sky-600);
+  margin-bottom: 2px;
+  letter-spacing: -.5px;
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Search bar */
+.search-bar {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.search-bar svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+.search-bar input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Users list */
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.user-card-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: .2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.user-card-item:hover {
+  border-color: var(--sky-300);
+  background: var(--sky-50);
+  transform: translateX(-3px);
+  box-shadow: var(--shadow-md);
+}
+[data-theme="dark"] .user-card-item:hover { background: #1a2e47; }
+
+.user-card-item .u-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sky-400), var(--sky-700));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.user-card-item .u-info { flex: 1; min-width: 0; }
+.user-card-item .u-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-card-item .u-phone {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  direction: ltr;
+  text-align: right;
+  margin-bottom: 3px;
+}
+.user-card-item .u-meta {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.user-card-item .u-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.user-card-item .u-meta svg { width: 12px; height: 12px; }
+.user-card-item .u-arrow {
+  color: var(--text-muted);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.blocked-badge {
+  background: var(--danger);
+  color: #fff;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+}
+
+/* User detail */
+.detail-header {
+  background: linear-gradient(135deg, var(--sky-500), var(--sky-700));
+  color: #fff;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-md);
+}
+.detail-header .d-avatar {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+.detail-header .d-info { flex: 1; min-width: 0; }
+.detail-header .d-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.detail-header .d-phone {
+  font-size: 13px;
+  opacity: .9;
+  direction: ltr;
+  text-align: right;
+  margin-bottom: 4px;
+}
+.detail-header .d-date {
+  font-size: 11.5px;
+  opacity: .8;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.action-btn {
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: .15s;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  min-height: 42px;
+}
+.action-btn:hover { background: var(--sidebar-hover); }
+.action-btn svg { width: 15px; height: 15px; }
+.action-btn.primary { background: var(--sky-600); color: #fff; border-color: var(--sky-600); }
+.action-btn.primary:hover { background: var(--sky-700); }
+.action-btn.danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+.action-btn.danger:hover { background: #dc2626; }
+.action-btn.warning { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+.action-btn.warning:hover { background: #d97706; }
+
+/* Chats list */
+.chats-list { display: flex; flex-direction: column; gap: 10px; }
+.chat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  transition: .15s;
+  box-shadow: var(--shadow-sm);
+}
+.chat-card:hover { border-color: var(--sky-300); }
+.chat-card .c-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.chat-card .c-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.chat-card .c-title svg { width: 14px; height: 14px; color: var(--sky-600); flex-shrink: 0; }
+.chat-card .c-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.chat-card .c-preview {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 10px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.chat-card .c-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.chat-card .c-actions button {
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--sidebar-hover);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: .12s;
+}
+.chat-card .c-actions button:hover { background: var(--sky-100); color: var(--sky-700); }
+.chat-card .c-actions button.danger:hover { background: #fee2e2; color: var(--danger); }
+.chat-card .c-actions svg { width: 13px; height: 13px; }
+
+/* Settings */
+.settings-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.settings-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--sky-800);
+}
+[data-theme="dark"] .settings-card h3 { color: var(--sky-300); }
+.settings-card h3 svg { width: 18px; height: 18px; }
+.setting-group { margin-bottom: 18px; }
+.setting-group:last-child { margin-bottom: 0; }
+.setting-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.setting-group .hint {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+.setting-group textarea,
+.setting-group input[type="text"],
+.setting-group input[type="number"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-alt);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  transition: .15s;
+}
+.setting-group textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.8;
+  direction: rtl;
+}
+.setting-group textarea:focus,
+.setting-group input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(14,165,233,.1);
+  background: var(--bg);
+}
+.range-wrap { display: flex; align-items: center; gap: 12px; }
+.range-wrap input[type="range"] {
+  flex: 1;
+  accent-color: var(--accent);
+}
+.range-val {
+  min-width: 50px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--sky-600);
+  font-size: 15px;
+  background: var(--sky-50);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+}
+.save-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--sky-400), var(--sky-700));
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(14,165,233,.3);
+  transition: .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(14,165,233,.4);
+}
+.save-btn:disabled { opacity: .6; cursor: not-allowed; }
+.save-btn svg { width: 16px; height: 16px; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 2;
+}
+.empty-state svg {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 14px;
+  opacity: .4;
+  color: var(--sky-400);
+}
+.empty-state h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  transition: .12s;
+}
+.back-btn:hover { background: var(--sidebar-hover); }
+.back-btn svg { width: 14px; height: 14px; transform: rotate(180deg); }
+
+/* Chat viewer */
+.chat-viewer {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-sm);
+}
+.chat-viewer .view-msg {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.chat-viewer .view-msg:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.chat-viewer .view-role {
+  font-size: 11.5px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chat-viewer .view-role svg { width: 13px; height: 13px; }
+.chat-viewer .view-msg.user .view-role { color: var(--sky-600); }
+.chat-viewer .view-msg.ai .view-role { color: #059669; }
+.chat-viewer .view-content {
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.chat-viewer .view-image {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: var(--radius-sm);
+  margin-top: 6px;
+  display: block;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .admin-body { padding: 14px 12px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat-card { padding: 12px; }
+  .stat-card .num { font-size: 22px; }
+  .stat-card .stat-icon { width: 34px; height: 34px; }
+  .admin-topbar { padding: 12px 14px; padding-top: calc(12px + var(--safe-top)); }
+  .admin-topbar h1 { font-size: 15px; }
+  .detail-header { padding: 16px; }
+  .detail-header .d-avatar { width: 50px; height: 50px; font-size: 20px; }
+  .detail-header .d-name { font-size: 16px; }
+  .chat-viewer { padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SVG SPRITE ═══════════════ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+    <circle cx="9" cy="7" r="4"/>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+  </symbol>
+  <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+    <path d="M10 11v6M14 11v6"/>
+    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <symbol id="i-ban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+  </symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    <polyline points="16 17 21 12 16 7"/>
+    <line x1="21" y1="12" x2="9" y2="12"/>
+  </symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/>
+    <polyline points="12 5 19 12 12 19"/>
+  </symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="19" y1="12" x2="5" y2="12"/>
+    <polyline points="12 19 5 12 12 5"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="16" height="16" rx="2"/>
+    <rect x="9" y="9" width="6" height="6"/>
+    <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+    <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+    <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
+    <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
+  </symbol>
+  <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+    <polyline points="17 21 17 13 7 13 7 21"/>
+    <polyline points="7 3 7 8 15 8"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="20" x2="18" y2="10"/>
+    <line x1="12" y1="20" x2="12" y2="4"/>
+    <line x1="6" y1="20" x2="6" y2="14"/>
+  </symbol>
+</svg>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div class="admin-app" id="adminApp" style="display:none">
+
+<!-- TOP BAR -->
+<header class="admin-topbar">
+  <h1><svg><use href="#i-shield"/></svg> پنل مدیریت</h1>
+  <div class="actions">
+    <button class="top-btn" onclick="goToChat()" title="بازگشت به چت">
+      <svg><use href="#i-home"/></svg>
+    </button>
+    <button class="top-btn" onclick="doLogout()" title="خروج">
+      <svg><use href="#i-logout"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="admin-tabs">
+  <button class="admin-tab active" onclick="switchTab('users', this)">
+    <svg><use href="#i-users"/></svg> کاربران
+  </button>
+  <button class="admin-tab" onclick="switchTab('settings', this)">
+    <svg><use href="#i-settings"/></svg> تنظیمات AI
+  </button>
+</div>
+
+<!-- BODY -->
+<div class="admin-body">
+
+  <!-- تب کاربران -->
+  <div class="admin-section active" id="tab-users">
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="search-bar">
+      <svg><use href="#i-search"/></svg>
+      <input id="userSearch" placeholder="جستجو در نام، شماره..." oninput="filterUsers(this.value)">
+    </div>
+    <div id="usersContainer">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        در حال بارگذاری...
+      </div>
+    </div>
+  </div>
+
+  <!-- تب تنظیمات -->
+  <div class="admin-section" id="tab-settings">
+    <div class="settings-card">
+      <h3><svg><use href="#i-cpu"/></svg> تنظیمات هوش مصنوعی</h3>
+      <div class="setting-group">
+        <label>دستورالعمل سیستم (System Prompt)</label>
+        <div class="hint">این متن به هوش مصنوعی گفته می‌شه چطور پاسخ بده.</div>
+        <textarea id="systemPrompt"></textarea>
+      </div>
+      <div class="setting-group">
+        <label>دما (Temperature): <span id="tempVal">0.7</span></label>
+        <div class="hint">۰ = دقیق و محافظه‌کار، ۲ = خلاق و متنوع</div>
+        <div class="range-wrap">
+          <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7"
+                 oninput="document.getElementById('tempVal').textContent = this.value">
+        </div>
+      </div>
+    </div>
+    <button class="save-btn" id="saveSettingsBtn" onclick="saveSettings()">
+      <svg><use href="#i-save"/></svg>
+      ذخیره تغییرات
+    </button>
+  </div>
+
+</div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="close-lightbox"><svg><use href="#i-x"/></svg></button>
+  <img id="lightboxImg" alt="">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/admin.js"></script>
+</body>
+</html>
