@@ -96,6 +96,10 @@ async function doLogin() {
 
 async function onLoginSuccess(user, animate) {
   state.user = user;
+
+  // ⬇️ ذخیره اطلاعات کاربر در localStorage
+  localStorage.setItem('oy_user', JSON.stringify(user));
+
   $('loginScreen').classList.add('hide');
   setTimeout(() => {
     $('loginScreen').style.display = 'none';
@@ -106,9 +110,23 @@ async function onLoginSuccess(user, animate) {
   $('userPhone').textContent = user.phone;
   $('userAvatar').textContent = user.name.charAt(0);
 
+  // ⬇️ نمایش دکمه‌ی پنل مدیریت اگه ادمین بود
+  const adminBtn = $('adminBtn');
+  const adminBadge = $('adminBadge');
+
+  console.log('=== LOGIN SUCCESS ===');
+  console.log('user:', user);
+  console.log('role:', user.role);
+  console.log('adminBtn found:', !!adminBtn);
+
   if (user.role === 'admin') {
-    $('adminBtn').style.display = 'flex';
-    $('adminBadge').style.display = 'inline-block';
+    if (adminBtn) adminBtn.style.display = 'flex';
+    if (adminBadge) adminBadge.style.display = 'inline-block';
+    console.log('✅ Admin mode activated');
+  } else {
+    if (adminBtn) adminBtn.style.display = 'none';
+    if (adminBadge) adminBadge.style.display = 'none';
+    console.log('👤 Regular user mode');
   }
 
   await loadChats();
@@ -121,6 +139,7 @@ async function doLogout() {
   state.token = null;
   state.conversations = [];
   localStorage.removeItem('oy_token');
+  localStorage.removeItem('oy_user');
   $('app').style.display = 'none';
   $('loginScreen').style.display = 'flex';
   setTimeout(() => $('loginScreen').classList.remove('hide'), 50);
@@ -227,8 +246,10 @@ function toggleTheme() {
   updateThemeBtn();
 }
 function updateThemeBtn() {
-  $('themeIcon').innerHTML = `<use href="#i-${state.theme === 'dark' ? 'sun' : 'moon'}"/>`;
-  $('themeText').textContent = state.theme === 'dark' ? 'حالت روز' : 'حالت شب';
+  const icon = $('themeIcon');
+  const text = $('themeText');
+  if (icon) icon.innerHTML = `<use href="#i-${state.theme === 'dark' ? 'sun' : 'moon'}"/>`;
+  if (text) text.textContent = state.theme === 'dark' ? 'حالت روز' : 'حالت شب';
 }
 
 /* ═══════════ Input ═══════════ */
@@ -342,7 +363,6 @@ function addMessage(text, type, imageData) {
     ? AI_AVATAR
     : esc(state.user?.name?.charAt(0) || 'شما');
 
-  // ساخت بخش محتوای پیام
   let contentHtml = '';
   if (imageData) {
     contentHtml += `<img class="msg-image" src="${imageData}" alt="تصویر" onclick="openLightbox('${imageData}')">`;
@@ -355,7 +375,6 @@ function addMessage(text, type, imageData) {
     }
   }
 
-  // اکشن‌ها
   let actions = '';
   if (type === 'ai') {
     actions = `<div class="msg-actions">
@@ -409,12 +428,10 @@ async function sendMessage(e) {
 
   const conv = state.conversations.find(c => c.id === state.currentId);
 
-  // ساخت پیام برای ذخیره و نمایش
   const savedMsg = { text: text, type: 'user' };
   if (state.image) savedMsg.image = state.image.preview;
   conv.messages.push(savedMsg);
 
-  // نمایش پیام کاربر با عکس
   addMessage(text, 'user', state.image?.preview);
 
   input.value = ''; grow(input);
@@ -455,10 +472,10 @@ async function streamResponse(conv, image) {
   state.streamingText = '';
   state.abortController = new AbortController();
 
-  const apiMessages = conv.messages.map(m => {
-    const msg = { role: m.type === 'ai' ? 'assistant' : 'user', content: m.text || '' };
-    return msg;
-  });
+  const apiMessages = conv.messages.map(m => ({
+    role: m.type === 'ai' ? 'assistant' : 'user',
+    content: m.text || ''
+  }));
 
   try {
     const headers = { 'Content-Type': 'application/json' };
@@ -643,7 +660,8 @@ function openAdmin() {
 
 /* ═══════════ Scroll ═══════════ */
 content.addEventListener('scroll', () => {
-  $('topBar').classList.toggle('scrolled', content.scrollTop > 10);
+  const topBar = $('topBar');
+  if (topBar) topBar.classList.toggle('scrolled', content.scrollTop > 10);
   scrollBtn.classList.toggle('show', content.scrollHeight - content.scrollTop - content.clientHeight > 250);
 }, { passive: true });
 
