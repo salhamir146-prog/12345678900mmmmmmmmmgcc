@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0369a1">
+<title>اوای یقین | دستیار هوشمند دینی</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ═══════════════ SVG Sprite (آیکون‌ها) ═══════════════ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+    <path d="M10 11v6M14 11v6"/>
+    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+  </symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </symbol>
+  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <line x1="12" y1="17" x2="12.01" y2="17"/>
+  </symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    <polyline points="16 17 21 12 16 7"/>
+    <line x1="21" y1="12" x2="9" y2="12"/>
+  </symbol>
+  <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+    <circle cx="8.5" cy="8.5" r="1.5"/>
+    <polyline points="21 15 16 10 5 21"/>
+  </symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+    <line x1="12" y1="19" x2="12" y2="23"/>
+    <line x1="8" y1="23" x2="16" y2="23"/>
+  </symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="19" x2="12" y2="5"/>
+    <polyline points="5 12 12 5 19 12"/>
+  </symbol>
+  <symbol id="i-square" viewBox="0 0 24 24" fill="currentColor">
+    <rect x="6" y="6" width="12" height="12" rx="2"/>
+  </symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="23 4 23 10 17 10"/>
+    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+  </symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24" fill="currentColor">
+    <rect x="6" y="4" width="4" height="16" rx="1"/>
+    <rect x="14" y="4" width="4" height="16" rx="1"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+  </symbol>
+  <symbol id="i-quran" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 19l3-2 15 0 3 2"/>
+    <path d="M3 19l-1 2M21 19l1 2"/>
+    <path d="M5 5c0-1 1-2 3-2l4 1.5L16 3c2 0 3 1 3 2v12l-4-1.5L11 17 7 15.5 5 17V5z"/>
+    <path d="M11 4.5v12.5"/>
+  </symbol>
+  <symbol id="i-scroll-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </symbol>
+  <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v18M5 8h14M8 8l-3 7a3 3 0 0 0 6 0l-3-7zM16 8l-3 7a3 3 0 0 0 6 0l-3-7z"/>
+  </symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3l1.9 5.8L20 10.7l-6.1 1.9L12 18l-1.9-5.4L4 10.7l6.1-1.9L12 3z"/>
+    <path d="M19 3l.7 2.1L22 6l-2.3.7L19 9l-.7-2.3L16 6l2.3-.9L19 3z"/>
+    <path d="M5 17l.5 1.5L7 19l-1.5.5L5 21l-.5-1.5L3 19l1.5-.5L5 17z"/>
+  </symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </symbol>
+</svg>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#075985"/></linearGradient>
+          <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+          <linearGradient id="lg3" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+        </defs>
+        <path d="M20 160 L50 140 L150 140 L180 160 Z" fill="url(#lg1)"/>
+        <path d="M50 140 L30 168" stroke="#075985" stroke-width="4" stroke-linecap="round"/>
+        <path d="M150 140 L170 168" stroke="#075985" stroke-width="4" stroke-linecap="round"/>
+        <path d="M35 60 Q45 48 70 46 L100 56 L100 142 Q70 132 35 142 Z" fill="url(#lg2)"/>
+        <path d="M165 60 Q155 48 130 46 L100 56 L100 142 Q130 132 165 142 Z" fill="url(#lg3)"/>
+        <path d="M42 66 Q52 56 72 54 L100 62 L100 138 Q72 130 42 138 Z" fill="#f0f9ff" opacity="0.95"/>
+        <path d="M158 66 Q148 56 128 54 L100 62 L100 138 Q128 130 158 138 Z" fill="#f0f9ff" opacity="0.95"/>
+        <path d="M50 78 Q62 72 98 76M50 86 Q62 80 98 84M50 94 Q62 88 98 92M150 78 Q138 72 102 76M150 86 Q138 80 102 84M150 94 Q138 88 102 92" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <h1>اوای یقین</h1>
+    <p class="sub">دستیار هوشمند پاسخ‌گویی به پرسش‌های دینی<br>برای ورود، نام و شماره تلفن خود را وارد کنید</p>
+    <div class="login-error" id="loginError"></div>
+    <div class="field">
+      <label>نام و نام خانوادگی</label>
+      <input type="text" id="loginName" placeholder="مثال: علی محمدی" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>شماره تلفن همراه</label>
+      <input type="tel" id="loginPhone" placeholder="09123456789" autocomplete="tel" inputmode="numeric">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">ورود به اوای یقین</button>
+    <div class="login-footer">
+      با ورود، شما با <strong>شرایط استفاده</strong> موافقت می‌کنید.<br>
+      اطلاعات شما نزد ما محفوظ است
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div class="app" id="app" style="display:none">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+    <div class="sidebar-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg><use href="#i-quran"/></svg>
+        </div>
+        <span class="brand-name">اوای یقین</span>
+      </div>
+      <button class="icon-btn" onclick="toggleCollapse()" title="بستن">
+        <svg><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <button class="new-chat-btn" onclick="newChat()">
+      <svg><use href="#i-plus"/></svg>
+      <span>گفت‌وگوی جدید</span>
+    </button>
+    <label class="search-box">
+      <svg><use href="#i-search"/></svg>
+      <input id="searchInput" placeholder="جستجو در گفتگوها..." oninput="filterHistory(this.value)">
+    </label>
+    <div class="section-label">گفتگوها</div>
+    <div class="history" id="history"></div>
+    <div class="sidebar-footer">
+      <button class="side-btn admin" onclick="openAdmin()" id="adminBtn" style="display:none">
+        <svg><use href="#i-shield"/></svg>
+        <span>پنل مدیریت</span>
+      </button>
+      <button class="side-btn" onclick="toggleTheme()">
+        <svg id="themeIcon"><use href="#i-moon"/></svg>
+        <span id="themeText">حالت شب</span>
+      </button>
+      <button class="side-btn" onclick="openModal('help')">
+        <svg><use href="#i-help"/></svg>
+        <span>راهنما</span>
+      </button>
+      <button class="side-btn danger" onclick="doLogout()">
+        <svg><use href="#i-logout"/></svg>
+        <span>خروج از حساب</span>
+      </button>
+      <div class="user-card">
+        <div class="user-avatar" id="userAvatar">؟</div>
+        <div class="user-info">
+          <div class="name" id="userName">کاربر</div>
+          <div class="phone" id="userPhone">-</div>
+        </div>
+        <span class="admin-badge" id="adminBadge" style="display:none">مدیر</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="backdrop" id="backdrop" onclick="closeSidebar()"></div>
+
+<!-- MAIN -->
+<main class="main">
+  <header class="top-bar" id="topBar">
+    <div class="top-bar-left">
+      <button class="icon-btn mobile-only" onclick="toggleSidebar()" aria-label="منو">
+        <svg><use href="#i-menu"/></svg>
+      </button>
+      <button class="icon-btn" id="collapseBtn" onclick="toggleCollapse()" aria-label="جمع کردن">
+        <svg style="transform:rotate(180deg)"><use href="#i-chevron-left"/></svg>
+      </button>
+      <div class="model-selector" onclick="openModal('model')">
+        <span class="name">اوای یقین</span>
+        <span class="badge">پاسخگوی دینی</span>
+        <svg class="chev"><use href="#i-chevron-down"/></svg>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <button class="icon-btn" onclick="openModal('options')" aria-label="گزینه‌ها">
+        <svg><use href="#i-dots"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="content" id="content">
+    <div class="wrap" id="wrap">
+      <div class="welcome" id="welcome">
+        <div class="welcome-logo">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wl1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#075985"/></linearGradient>
+              <linearGradient id="wl2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+              <linearGradient id="wl3" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+            </defs>
+            <ellipse cx="50" cy="92" rx="35" ry="3" fill="#0369a1" opacity="0.15"/>
+            <path d="M10 80 L25 70 L75 70 L90 80 Z" fill="url(#wl1)"/>
+            <path d="M25 70 L15 84" stroke="#075985" stroke-width="2" stroke-linecap="round"/>
+            <path d="M75 70 L85 84" stroke="#075985" stroke-width="2" stroke-linecap="round"/>
+            <path d="M17.5 30 Q22.5 24 35 23 L50 28 L50 71 Q35 66 17.5 71 Z" fill="url(#wl2)"/>
+            <path d="M82.5 30 Q77.5 24 65 23 L50 28 L50 71 Q65 66 82.5 71 Z" fill="url(#wl3)"/>
+            <path d="M21 33 Q26 28 36 27 L50 31 L50 69 Q36 65 21 69 Z" fill="#f0f9ff" opacity="0.95"/>
+            <path d="M79 33 Q74 28 64 27 L50 31 L50 69 Q64 65 79 69 Z" fill="#f0f9ff" opacity="0.95"/>
+            <path d="M25 39 Q31 36 49 38M25 43 Q31 40 49 42M25 47 Q31 44 49 46M75 39 Q69 36 51 38M75 43 Q69 40 51 42M75 47 Q69 44 51 46" stroke="#38bdf8" stroke-width="1" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <h1>سلام، من اوای یقین هستم</h1>
+        <p>دستیار هوشمند پاسخ‌گویی به پرسش‌های دینی، احکام، تفسیر قرآن و معارف اسلامی.</p>
+        <div class="ayah">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾ — طه: ۱۱۴</div>
+      </div>
+
+      <div class="suggestion-grid" id="cards">
+        <button class="suggestion" onclick="promptText('احکام نماز مسافر را توضیح بده')">
+          <strong><svg><use href="#i-scale"/></svg> احکام و فقه</strong>
+          <span>احکام نماز مسافر را توضیح بده</span>
+        </button>
+        <button class="suggestion" onclick="promptText('تفسیر سوره حمد را بنویس')">
+          <strong><svg><use href="#i-book"/></svg> تفسیر قرآن</strong>
+          <span>تفسیر سوره حمد را بنویس</span>
+        </button>
+        <button class="suggestion" onclick="promptText('چند دعای پر فضیلت برای آرامش معرفی کن')">
+          <strong><svg><use href="#i-sparkles"/></svg> دعا و ذکر</strong>
+          <span>چند دعای پر فضیلت معرفی کن</span>
+        </button>
+        <button class="suggestion" onclick="promptText('اخلاق اسلامی در برخورد با والدین چگونه است؟')">
+          <strong><svg><use href="#i-heart"/></svg> اخلاق و سیره</strong>
+          <span>اخلاق اسلامی در برخورد با والدین</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <button class="scroll-bottom" id="scrollBtn" onclick="scrollBottom()" aria-label="رفتن به پایین">
+    <svg><use href="#i-scroll-down"/></svg>
+  </button>
+
+  <div class="composer-area">
+    <form class="composer" onsubmit="sendMessage(event)">
+      <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImage(this)">
+      <button type="button" class="composer-btn" id="imageBtn" title="تصویر" onclick="document.getElementById('imageInput').click()">
+        <svg><use href="#i-image"/></svg>
+      </button>
+      <textarea id="input" rows="1" placeholder="پرسش دینی خود را بنویسید..." oninput="grow(this)" onkeydown="handleKey(event)"></textarea>
+      <button type="button" class="composer-btn" id="micBtn" title="میکروفون" onclick="toggleMic()">
+        <svg><use href="#i-mic"/></svg>
+      </button>
+      <button id="sendBtn" type="submit" class="send-btn" disabled title="ارسال">
+        <svg id="sendIcon"><use href="#i-arrow-up"/></svg>
+      </button>
+      <div class="image-preview" id="imagePreview">
+        <img id="imagePreviewImg" alt="پیش‌نمایش">
+        <button type="button" class="remove-img" onclick="clearImage()" aria-label="حذف">
+          <svg><use href="#i-x"/></svg>
+        </button>
+      </div>
+    </form>
+    <div class="composer-note">
+      پاسخ‌های <strong>اوای یقین</strong> 
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- ═══════════════ MODAL ═══════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- ═══════════════ LIGHTBOX ═══════════════ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="close-lightbox" aria-label="بستن"><svg><use href="#i-x"/></svg></button>
+  <img id="lightboxImg" alt="">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
